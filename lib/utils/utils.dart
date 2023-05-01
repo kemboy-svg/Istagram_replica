@@ -14,7 +14,7 @@ pickImage(ImageSource source) async {
 // ignore: non_constant_identifier_names
 
 
-showSnackBar(BuildContext context, String content) {
+showSnackBar(String content, BuildContext context) {
   return ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(content),

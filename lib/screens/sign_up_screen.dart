@@ -56,7 +56,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     });
 
     if (res != 'Signed up success') {
-      showSnackBar(res as BuildContext, context as String);
+      // ignore: use_build_context_synchronously
+      showSnackBar(res, context);
     } else {}
   }
 
