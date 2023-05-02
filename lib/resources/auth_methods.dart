@@ -1,15 +1,14 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage_web/firebase_storage_web.dart';
 import 'package:instagram_app/resources/storage_methods.dart';
+
+
 
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _fire = FirebaseFirestore.instance;
-  
 
   Future<String> signUpUser({
     required String email,
@@ -51,33 +50,36 @@ class AuthMethods {
         //   'Following': [],
         // });
         res = " Signed up success";
+      } else {
+         // ignore: non_constant_identifier_names, unused_element
       }
     } catch (err) {
       res = err.toString();
+    }
+    return res;
+  }
+
+  Future<String> loginUser({
+    required String email,
+    required String password,
+  }) async {
+    String res = "Some error Occurred";
+    try {
+      if (email.isNotEmpty || password.isNotEmpty) {
+        // logging in user with email and password
+        await _auth.signInWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+        res = "login success";
+      } else {
+        res = "Please enter all the fields";
+      }
+    } catch (err) {
+      return err.toString();
     }
     return res;
   }
 
   // ignore: non_constant_identifier_names
-  Future<String> LoginUser({
-    required String email,
-    required String password,
-  }) async {
-    String res = "some error occured";
-
-    try {
-      if (email.isNotEmpty || password.isNotEmpty) {
-        _auth.signInWithEmailAndPassword(
-          email: email,
-          password: password,
-        );
-        res = 'login success';
-      } else {
-        res = 'Please enter all the field';
-      }
-    } catch (err) {
-      res = err.toString();
-    }
-    return res;
-  }
 }

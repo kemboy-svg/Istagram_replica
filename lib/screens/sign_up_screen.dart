@@ -4,9 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:instagram_app/screens/login_screen.dart';
 import 'package:instagram_app/widgets/text_input_field.dart';
 
 import '../resources/auth_methods.dart';
+import '../responsive/mobile_screen_layout.dart';
+import '../responsive/responsive_layout.dart';
+import '../responsive/web_Screen_layout.dart';
 import '../utils/colors.dart';
 import '../utils/utils.dart';
 
@@ -58,7 +62,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (res != 'Signed up success') {
       // ignore: use_build_context_synchronously
       showSnackBar(res, context);
-    } else {}
+    } else {
+      // ignore: use_build_context_synchronously
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const ResponsiveLayout(
+            webScreenLayout: WebScreenLayout(),
+            mobileScreenLayout: MobileScreenLayout(),
+          ),
+        ),
+      );
+    }
+  }
+
+  // ignore: non_constant_identifier_names
+  void NavigateToLogin(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const LoginScreen(),
+      ),
+    );
   }
 
   @override
@@ -81,13 +104,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 color: primaryColor, height: 64,
               ),
               const SizedBox(
-                height: 10,
+                height: 5,
               ),
               Stack(
                 children: [
                   _image != null
                       ? CircleAvatar(
-                          radius: 64,
+                          radius: 50,
                           backgroundImage: MemoryImage(_image!),
                         )
                       : const CircleAvatar(
@@ -108,7 +131,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ],
               ),
               const SizedBox(
-                height: 10,
+                height: 5,
               ),
               TextFieldInput(
                 hintText: 'Enter your Username',
@@ -116,7 +139,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 textEditingController: _usernameContoller,
               ),
               const SizedBox(
-                height: 10,
+                height: 5,
               ),
               TextFieldInput(
                 hintText: 'Enter your Email',
@@ -124,7 +147,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 textEditingController: _emailContoller,
               ),
               const SizedBox(
-                height: 10,
+                height: 5,
               ),
               TextFieldInput(
                 hintText: 'Enter your Pasword',
@@ -133,7 +156,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 isPass: true,
               ),
               const SizedBox(
-                height: 10,
+                height: 5,
               ),
               TextFieldInput(
                 hintText: 'Enter your Bio',
@@ -141,7 +164,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 textEditingController: _bioContoller,
               ),
               const SizedBox(
-                height: 10,
+                height: 5,
               ),
               InkWell(
                 onTap: signUpUser,
@@ -156,18 +179,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                       color: blueColor),
-                  child: _isLoading ?
-                  const Center(
-                    child: CircularProgressIndicator(
-                      color: primaryColor,
-                    ),
-                  )
-                  // ignore: sort_child_properties_last
-                  : const Text('Sign Up'),
+                  child: _isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                            color: primaryColor,
+                          ),
+                        )
+                      // ignore: sort_child_properties_last
+                      : const Text('Sign Up'),
                 ),
               ),
               const SizedBox(
-                height: 12,
+                height: 10,
               ),
               Flexible(flex: 2, child: Container()),
               Row(
@@ -180,6 +203,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: const Text('Already have an account?'),
                   ),
                   GestureDetector(
+                    onTap: () => NavigateToLogin(context),
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                         vertical: 8,

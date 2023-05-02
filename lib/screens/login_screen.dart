@@ -1,11 +1,18 @@
+// ignore_for_file: unused_element
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram_app/resources/auth_methods.dart';
+import 'package:instagram_app/responsive/mobile_screen_layout.dart';
+import 'package:instagram_app/responsive/web_Screen_layout.dart';
+import 'package:instagram_app/screens/sign_up_screen.dart';
 import 'package:instagram_app/utils/colors.dart';
 import 'package:instagram_app/utils/utils.dart';
 import 'package:instagram_app/widgets/text_input_field.dart';
+
+import '../responsive/responsive_layout.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -29,24 +36,37 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isLoading = true;
     });
-    String res = await AuthMethods().LoginUser(
-       email: _emailContoller.text,
-       password: _passwordContoller.text
-       );
+    String res = await AuthMethods().loginUser(
+      email: _emailContoller.text,
+      password: _passwordContoller.text,
+    );
 
-    if (res == 'success') {
-    setState(() {
-      _isLoading = false;
-    });
-    } 
-    
-    else {
-      // ignore: use_build_context_synchronously
-     
+    if (res == 'login success') {
+      setState(() {
+        _isLoading = false;
+      });
+      // ignore: non_constant_identifier_names, use_build_context_synchronously
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (context) => const ResponsiveLayout(
+          mobileScreenLayout: MobileScreenLayout(),
+          webScreenLayout: WebScreenLayout(),
+        ),
+      ),
+      );
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
     }
-    setState(() {
-      _isLoading = false;
-    });
+  }
+
+  // ignore: non_constant_identifier_names
+  void NavigateToSignup(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const SignUpScreen(),
+      ),
+    );
   }
 
   @override
@@ -89,14 +109,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 onTap: loginUser,
                 child: Container(
                   // ignore: sort_child_properties_last
-                  child: _isLoading ?
-                  const Center(
-                    child: CircularProgressIndicator(
-                      color: primaryColor,
-                    ),
-                  )
-
-                  :const Text('Login'),
+                  child: _isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                            color: primaryColor,
+                          ),
+                        )
+                      : const Text('Login'),
                   width: double.infinity,
                   alignment: Alignment.center,
                   padding: const EdgeInsets.symmetric(vertical: 12),
@@ -123,6 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: const Text('Dont have an account?'),
                   ),
                   GestureDetector(
+                    onTap: () => NavigateToSignup(context),
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                         vertical: 8,
