@@ -3,8 +3,7 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:instagram_app/resources/storage_methods.dart';
-
-
+import 'package:instagram_app/models/user.dart' as model;
 
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -32,15 +31,18 @@ class AuthMethods {
         String photoUrl = await StorageMethods()
             .uploadImageToStorage('ProfilePics', file, false);
 
-        await _fire.collection('users').doc(cred.user!.uid).set({
-          'username': username,
-          'uid': cred.user!.uid,
-          'bio': bio,
-          'email': email,
-          'Followers': [],
-          'Following': [],
-          'photourl': photoUrl,
-        });
+        model.User user = model.User(
+          username: username,
+          uid: cred.user!.uid,
+          bio: bio,
+          email: email,
+          followers: [],
+          following: [],
+          photoUrl: photoUrl,
+         
+        );
+
+        await _fire.collection('users').doc(cred.user!.uid).set(user.toJson(),);
         // await _fire.collection('users').add({
         //   'username': username,
         //   'uid': cred.user!.uid,
@@ -51,7 +53,7 @@ class AuthMethods {
         // });
         res = " Signed up success";
       } else {
-         // ignore: non_constant_identifier_names, unused_element
+        // ignore: non_constant_identifier_names, unused_element
       }
     } catch (err) {
       res = err.toString();
@@ -83,3 +85,5 @@ class AuthMethods {
 
   // ignore: non_constant_identifier_names
 }
+
+
