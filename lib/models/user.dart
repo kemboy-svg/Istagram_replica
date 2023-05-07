@@ -28,4 +28,18 @@ class User {
         "following": following,
         "followers": followers,
       };
+
+  static User fromSnap(DocumentSnapshot snap) {
+    var snapshot = snap.data() as Map<String, dynamic>;
+
+    return User(
+      username: snapshot['username'],
+      email: snapshot['email'],
+      bio: snapshot['bio'],
+      uid: snapshot['uid'],
+      followers: snapshot['followers'],
+      following: snapshot['following'],
+      photoUrl: snapshot['photoUrl'],
+    );
+  }
 }
