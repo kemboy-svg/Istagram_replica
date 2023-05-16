@@ -36,7 +36,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MultiProvider(providers:[
+      ChangeNotifierProvider(
+        create:(_) => UserProvider(),
+         ),
+    ],
+     
+    child: MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Instagram IG',
       theme: ThemeData.dark().copyWith(
@@ -70,6 +76,7 @@ class MyApp extends StatelessWidget {
           return const LoginScreen();
         },
       ),
+    ),
     );
   }
 }
